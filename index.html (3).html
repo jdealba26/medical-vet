@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Vet — Hospital Veterinario</title>
+<meta name="description" content="Plantilla web para clínicas veterinarias: servicios, equipo, herramientas interactivas para dueños de mascotas, reseñas, FAQ y agenda de citas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F9F9;
+    --paper-2:#E7F3F2;
+    --sand:#DCEEEC;
+    --ink:#152524;
+    --ink-soft:#4C625F;
+    --pine:#0F6674;
+    --pine-deep:#0A3742;
+    --pine-mid:#1C8695;
+    --marigold:#F2994A;
+    --marigold-deep:#D97C2C;
+    --coral:#E1613F;
+    --white:#FFFFFF;
+    --line:rgba(34,32,27,.14);
+    --shadow: 0 14px 34px rgba(24,43,29,.14);
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Plus Jakarta Sans', sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Instrument Serif', serif; font-weight:400; margin:0 0 .45em; color:var(--pine-deep);
+    line-height:1.08; letter-spacing:-0.01em;
+  }
+  h1 em, h2 em{font-style:italic; color:var(--marigold-deep);}
+  p{margin:0 0 1em; color:var(--ink-soft); max-width:60ch;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{margin:0; padding:0; list-style:none;}
+  button{font-family:inherit;}
+  section{padding:96px 0;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:.8rem; font-weight:700; color:var(--pine-mid); margin-bottom:16px;
+  }
+  .kicker::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--marigold);}
+  .btn{
+    display:inline-flex; align-items:center; gap:9px; padding:15px 28px; border-radius:14px;
+    font-weight:700; font-size:.94rem; border:1.5px solid transparent; cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--marigold); color:var(--pine-deep);}
+  .btn-primary:hover{background:var(--marigold-deep); box-shadow:0 14px 26px rgba(232,153,44,.4);}
+  .btn-outline{background:transparent; border-color:var(--pine-deep); color:var(--pine-deep);}
+  .btn-outline:hover{background:var(--pine-deep); color:var(--paper);}
+  .btn-light{background:var(--paper); color:var(--pine-deep);}
+  .btn-light:hover{background:var(--white);}
+
+  /* stamp / badge motif */
+  .stamp{
+    width:112px; height:112px; border-radius:50%; border:2px dashed rgba(43,70,50,.4);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'Instrument Serif', serif; font-size:.78rem; color:var(--pine-deep);
+    padding:10px; line-height:1.2; flex-shrink:0; transform:rotate(-8deg);
+  }
+
+  /* wavy divider between bands */
+  .wave{display:block; width:100%; height:54px; margin-top:-2px;}
+
+  /* ===== EMERGENCY STRIP ===== */
+  .emerg-strip{
+    background:var(--pine-deep); color:var(--paper); font-size:.82rem; font-weight:600;
+    padding:9px 0; text-align:center;
+  }
+  .emerg-strip a{color:var(--marigold); text-decoration:underline;}
+  .dot-live{
+    display:inline-block; width:7px; height:7px; border-radius:50%; background:#5FD08A;
+    margin-right:7px; animation:blink 1.6s infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:.35;}}
+
+  /* ===== HEADER ===== */
+  header{position:sticky; top:0; z-index:1000; background:rgba(251,243,231,.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; max-width:var(--maxw); margin:0 auto;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Instrument Serif', serif; font-size:1.5rem; color:var(--pine-deep);}
+  .logo .mark{
+    width:38px; height:38px; border-radius:11px; background:var(--pine); display:flex; align-items:center; justify-content:center;
+  }
+  .nav-links{display:flex; gap:28px; font-size:.92rem; font-weight:600;}
+  .nav-links a{color:var(--ink-soft); transition:color .15s;}
+  .nav-links a:hover{color:var(--pine-deep);}
+  .nav-right{display:flex; align-items:center; gap:16px;}
+  .nav-phone{font-size:.88rem; font-weight:700; color:var(--pine-deep); display:flex; align-items:center; gap:6px;}
+  .burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{display:block; width:24px; height:2px; background:var(--pine-deep); margin:5px 0;}
+
+  /* ===== HERO ===== */
+  .hero{padding:64px 0 0; position:relative; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:60px; align-items:center;}
+  .hero h1{font-size:clamp(2.5rem, 4.6vw, 3.7rem); max-width:13ch;}
+  .hero .lead{font-size:1.12rem; max-width:42ch; margin-bottom:30px;}
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:34px;}
+  .hero-badges{display:flex; gap:26px; flex-wrap:wrap;}
+  .hero-badge{display:flex; align-items:center; gap:9px; font-size:.85rem; color:var(--ink-soft); font-weight:600;}
+  .hero-visual{position:relative;}
+  .hero-photo{
+    border-radius:26px 26px 90px 26px; overflow:hidden; box-shadow:var(--shadow); aspect-ratio:4/4.7;
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover;}
+  .hero-stamp{position:absolute; top:-18px; right:-8px; background:var(--paper); box-shadow:var(--shadow);}
+  .hero-note{
+    position:absolute; bottom:-24px; left:-26px; background:var(--white); border-radius:16px; padding:16px 20px;
+    box-shadow:var(--shadow); display:flex; align-items:center; gap:12px; max-width:220px;
+  }
+  .hero-note strong{display:block; font-family:'Instrument Serif',serif; font-size:1.2rem; color:var(--pine-deep);}
+  .hero-note span{font-size:.76rem; color:var(--ink-soft);}
+
+  /* ===== STATS BAND ===== */
+  .stats{background:var(--pine-deep); color:var(--paper); padding:64px 0;}
+  .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:30px;}
+  .stat-num{font-family:'Instrument Serif',serif; font-size:2.8rem; color:var(--marigold); margin-bottom:2px;}
+  .stat-label{font-size:.85rem; color:rgba(251,243,231,.72);}
+
+  /* ===== SERVICIOS ===== */
+  .section-head{max-width:620px; margin-bottom:52px;}
+  .section-head.center{margin-left:auto; margin-right:auto; text-align:center;}
+  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .service-card{
+    background:var(--white); border-radius:20px; padding:32px 28px; border:1px solid var(--line);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .service-card:nth-child(3n+2){background:var(--paper-2);}
+  .service-card:hover{transform:translateY(-5px); box-shadow:var(--shadow);}
+  .service-icon{
+    width:50px; height:50px; border-radius:13px; background:var(--pine); color:var(--paper);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .service-card h3{font-size:1.28rem; margin-bottom:8px;}
+  .service-card p{font-size:.9rem; margin-bottom:0;}
+
+  /* ===== ENCUENTRA TU SOLUCION (quiz) ===== */
+  .finder{background:var(--sand);}
+  .finder-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .finder-card{
+    background:var(--paper); border-radius:18px; padding:26px 22px; cursor:pointer;
+    border:1.5px solid transparent; transition:.2s; min-height:200px; display:flex; flex-direction:column; gap:12px;
+  }
+  .finder-card:hover{border-color:var(--pine); background:var(--white); transform:translateY(-3px);}
+  .finder-emoji{font-size:1.7rem;}
+  .finder-card h3{font-size:1.05rem; margin-bottom:2px;}
+  .finder-card p{font-size:.84rem; margin-bottom:0; flex-grow:1;}
+  .finder-tag{font-size:.78rem; font-weight:700; color:var(--pine-deep);}
+
+  /* ===== POR QUE ELEGIRNOS ===== */
+  .why-row{display:grid; grid-template-columns:.9fr 1.1fr; gap:64px; align-items:center; margin-bottom:60px;}
+  .why-row:last-child{margin-bottom:0;}
+  .why-row.reverse{grid-template-columns:1.1fr .9fr;}
+  .why-row.reverse .why-media{order:2;}
+  .why-media img{border-radius:20px 20px 70px 20px; box-shadow:var(--shadow);}
+  .why-num{font-family:'Instrument Serif',serif; font-style:italic; font-size:1.1rem; color:var(--marigold-deep); display:block; margin-bottom:8px;}
+  .why-text h3{font-size:1.7rem;}
+  .why-list{margin-top:16px; display:flex; flex-direction:column; gap:10px;}
+  .why-list li{display:flex; gap:10px; font-size:.9rem; color:var(--ink-soft); align-items:flex-start;}
+  .why-list svg{flex-shrink:0; margin-top:3px; color:var(--pine);}
+
+  /* ===== HERRAMIENTAS (widgets) ===== */
+  .tools{background:var(--pine-deep); color:var(--paper);}
+  .tools .section-head h2{color:var(--paper);}
+  .tools .section-head p{color:rgba(251,243,231,.68);}
+  .tools-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .tool-card{background:rgba(251,243,231,.06); border:1px solid rgba(251,243,231,.16); border-radius:22px; padding:32px;}
+  .tool-card h3{color:var(--paper); font-size:1.4rem;}
+  .tool-card > p{color:rgba(251,243,231,.65); font-size:.86rem;}
+
+  /* age calc */
+  .age-controls{display:flex; gap:10px; margin:20px 0; flex-wrap:wrap;}
+  .seg{display:flex; background:rgba(251,243,231,.1); border-radius:100px; padding:4px; gap:4px;}
+  .seg button{
+    background:none; border:none; color:rgba(251,243,231,.7); padding:8px 18px; border-radius:100px;
+    font-size:.85rem; font-weight:700; cursor:pointer; transition:.2s;
+  }
+  .seg button.active{background:var(--marigold); color:var(--pine-deep);}
+  .age-input{display:flex; align-items:center; gap:10px; flex-grow:1; min-width:180px;}
+  .age-input input[type=range]{flex-grow:1; accent-color:var(--marigold);}
+  .age-input .val{font-family:'Instrument Serif',serif; font-size:1.3rem; color:var(--marigold); min-width:64px;}
+  .age-result{
+    margin-top:18px; background:rgba(251,243,231,.08); border-radius:16px; padding:20px 24px;
+    display:flex; align-items:center; gap:18px;
+  }
+  .age-result .big{font-family:'Instrument Serif',serif; font-size:2.6rem; color:var(--paper);}
+  .age-result span{font-size:.8rem; color:rgba(251,243,231,.65);}
+
+  /* vaccine checklist */
+  .vac-tabs{display:flex; gap:8px; margin-bottom:18px;}
+  .vac-tabs button{
+    background:rgba(251,243,231,.1); border:none; color:rgba(251,243,231,.7); padding:8px 16px; border-radius:100px;
+    font-size:.82rem; font-weight:700; cursor:pointer;
+  }
+  .vac-tabs button.active{background:var(--marigold); color:var(--pine-deep);}
+  .vac-bar-track{height:8px; border-radius:100px; background:rgba(251,243,231,.14); overflow:hidden; margin-bottom:18px;}
+  .vac-bar-fill{height:100%; background:var(--marigold); width:0%; transition:width .3s;}
+  .vac-list{display:flex; flex-direction:column; gap:10px;}
+  .vac-item{display:flex; align-items:center; gap:12px; font-size:.88rem; cursor:pointer;}
+  .vac-item input{accent-color:var(--marigold); width:17px; height:17px;}
+  .vac-item span{color:rgba(251,243,231,.85);}
+  .vac-item.checked span{text-decoration:line-through; color:rgba(251,243,231,.4);}
+
+  /* ===== EQUIPO ===== */
+  .team-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:26px;}
+  .team-card{text-align:center;}
+  .team-photo-wrap{position:relative; margin-bottom:16px;}
+  .team-card img{border-radius:50%; aspect-ratio:1/1; object-fit:cover; border:3px solid var(--paper); box-shadow:var(--shadow);}
+  .team-card h3{font-size:1.15rem; margin-bottom:2px;}
+  .team-role{font-size:.8rem; color:var(--pine-mid); font-weight:700; display:block; margin-bottom:8px;}
+  .team-card p{font-size:.84rem; margin:0 auto;}
+
+  /* ===== HISTORIAS / GALERIA ===== */
+  .stories-grid{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:190px; gap:14px;}
+  .story-card{position:relative; border-radius:16px; overflow:hidden;}
+  .story-card:nth-child(1){grid-row:span 2;}
+  .story-card:nth-child(6){grid-row:span 2;}
+  .story-card img{width:100%; height:100%; object-fit:cover;}
+  .story-cap{
+    position:absolute; left:0; right:0; bottom:0; padding:14px;
+    background:linear-gradient(0deg, rgba(24,43,29,.85), transparent);
+    color:var(--paper); font-size:.78rem; font-weight:700;
+  }
+
+  /* ===== RESEÑAS ===== */
+  .reviews{background:var(--paper-2);}
+  .reviews-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .review-card{background:var(--white); border-radius:20px; padding:28px; border:1px solid var(--line);}
+  .review-stars{color:var(--marigold); letter-spacing:2px; margin-bottom:14px;}
+  .review-card p{font-size:.9rem;}
+  .review-author{display:flex; align-items:center; gap:10px; margin-top:16px;}
+  .review-avatar{width:36px; height:36px; border-radius:50%; background:var(--sand); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Instrument Serif',serif; color:var(--pine-deep);}
+  .review-author strong{display:block; font-size:.85rem;}
+  .review-author span{font-size:.72rem; color:var(--ink-soft);}
+
+  /* ===== CLINICA + MAPA ===== */
+  .clinic-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  .clinic-gallery{display:grid; grid-template-columns:1.2fr .8fr; grid-template-rows:1fr 1fr; gap:14px; height:440px;}
+  .clinic-gallery img{width:100%; height:100%; object-fit:cover; border-radius:18px;}
+  .clinic-gallery .g1{grid-row:1/3; border-radius:18px 18px 70px 18px;}
+  .info-list{margin:24px 0; display:flex; flex-direction:column; gap:16px;}
+  .info-item{display:flex; gap:14px; align-items:flex-start;}
+  .info-icon{width:38px; height:38px; border-radius:11px; background:var(--sand); display:flex; align-items:center; justify-content:center; color:var(--pine-deep); flex-shrink:0;}
+  .info-item strong{display:block; font-size:.9rem; color:var(--pine-deep);}
+  .info-item span{font-size:.84rem; color:var(--ink-soft);}
+  .map-embed{margin-top:24px; border-radius:18px; overflow:hidden; border:1px solid var(--line); aspect-ratio:16/9;}
+
+  /* ===== FAQ ===== */
+  .faq-list{max-width:760px; margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; padding:22px 4px; display:flex;
+    justify-content:space-between; align-items:center; cursor:pointer; font-family:'Instrument Serif',serif;
+    font-size:1.1rem; color:var(--pine-deep);
+  }
+  .faq-q .plus{transition:transform .25s ease; margin-left:20px; color:var(--pine); flex-shrink:0;}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .faq-a p{padding:0 4px 22px; font-size:.9rem;}
+
+  /* ===== AGENDA ===== */
+  .booking{background:var(--sand); border-radius:32px; padding:64px; display:grid; grid-template-columns:.9fr 1.1fr; gap:56px;}
+  .booking-copy h2{font-size:2.1rem;}
+  .booking-perks{margin-top:26px; display:flex; flex-direction:column; gap:13px;}
+  .booking-perks li{display:flex; gap:10px; font-size:.9rem; color:var(--ink-soft); align-items:center;}
+  .booking-perks svg{color:var(--pine); flex-shrink:0;}
+  .whatsapp-cta{
+    margin-top:28px; display:inline-flex; align-items:center; gap:10px; background:var(--white); padding:14px 22px;
+    border-radius:100px; font-weight:700; font-size:.9rem; box-shadow:var(--shadow);
+  }
+  .whatsapp-cta svg{color:#25D366;}
+  form.book-form{background:var(--white); border-radius:22px; padding:34px; box-shadow:var(--shadow);}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:.8rem; font-weight:700; color:var(--pine-deep);}
+  .field input, .field select, .field textarea{
+    border:1px solid var(--line); border-radius:11px; padding:12px 14px; font-family:inherit; font-size:.92rem;
+    background:var(--paper); color:var(--ink);
+  }
+  .field textarea{resize:vertical; min-height:80px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--pine); outline-offset:1px;}
+  .book-form .btn{width:100%; justify-content:center; margin-top:6px;}
+  .form-note{font-size:.74rem; color:var(--ink-soft); text-align:center; margin-top:12px;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--pine-deep); color:rgba(251,243,231,.75); padding-top:70px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr .8fr .8fr 1fr; gap:40px; padding-bottom:50px; border-bottom:1px solid rgba(251,243,231,.14);}
+  .footer-logo{display:flex; align-items:center; gap:10px; color:var(--paper); font-family:'Instrument Serif',serif; font-size:1.3rem; margin-bottom:14px;}
+  .footer-logo .mark{width:32px; height:32px; border-radius:9px; background:var(--marigold); display:flex; align-items:center; justify-content:center;}
+  footer h4{color:var(--paper); font-family:'Plus Jakarta Sans',sans-serif; font-size:.82rem; font-weight:800; margin-bottom:16px;}
+  footer ul li{margin-bottom:10px; font-size:.86rem;}
+  footer ul li a:hover{color:var(--paper);}
+  .footer-social{display:flex; gap:12px; margin-top:16px;}
+  .footer-social a{width:34px; height:34px; border-radius:50%; background:rgba(251,243,231,.08); display:flex; align-items:center; justify-content:center;}
+  .footer-social a:hover{background:var(--marigold); color:var(--pine-deep);}
+  .footer-bottom{padding:22px 0; display:flex; justify-content:space-between; font-size:.78rem; flex-wrap:wrap; gap:10px;}
+
+  /* ===== WHATSAPP FLOTANTE ===== */
+  .wa-float{position:fixed; bottom:26px; right:26px; z-index:1200; display:flex; align-items:center; gap:10px;}
+  .wa-tooltip{
+    background:var(--white); padding:10px 16px; border-radius:12px; font-size:.82rem; font-weight:700;
+    box-shadow:var(--shadow); color:var(--ink); white-space:nowrap; opacity:0; transform:translateX(8px);
+    transition:.25s ease; pointer-events:none;
+  }
+  .wa-float:hover .wa-tooltip{opacity:1; transform:translateX(0);}
+  .wa-btn{
+    width:58px; height:58px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(37,211,102,.45); position:relative; flex-shrink:0;
+  }
+  .wa-btn::after{content:''; position:absolute; inset:0; border-radius:50%; background:#25D366; animation:pulse 2.2s ease-out infinite;}
+  @keyframes pulse{0%{transform:scale(1); opacity:.6;} 100%{transform:scale(1.7); opacity:0;}}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:980px){
+    .nav-links,.nav-phone{display:none;}
+    .burger{display:block;}
+    .hero-grid,.why-row,.why-row.reverse,.clinic-grid,.tools-grid{grid-template-columns:1fr; gap:40px;}
+    .why-row.reverse .why-media{order:0;}
+    .stats-grid{grid-template-columns:repeat(2,1fr); row-gap:28px;}
+    .services-grid,.finder-grid{grid-template-columns:1fr 1fr;}
+    .team-grid{grid-template-columns:1fr 1fr;}
+    .stories-grid{grid-template-columns:1fr 1fr;}
+    .reviews-grid{grid-template-columns:1fr;}
+    .booking{grid-template-columns:1fr; padding:40px 26px;}
+    .footer-grid{grid-template-columns:1fr 1fr; row-gap:36px;}
+  }
+  @media (max-width:600px){
+    section{padding:64px 0;}
+    .wrap{padding:0 20px;}
+    .services-grid,.finder-grid,.team-grid,.stories-grid{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .footer-bottom{flex-direction:column;}
+    .hero-note{display:none;}
+    .booking{padding:30px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== EMERGENCY STRIP ===== -->
+<div class="emerg-strip">
+  <span class="dot-live"></span> Urgencias 24 horas · <a href="tel:+523319197443">33 1919 7443</a> — atendemos cualquier día del año
+</div>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <nav class="nav">
+    <a href="#inicio" class="logo">
+      <span class="mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="7" cy="7" r="2.3" fill="#F4F9F9"/><circle cx="17" cy="7" r="2.3" fill="#F4F9F9"/>
+          <circle cx="4.5" cy="12.5" r="2" fill="#F4F9F9"/><circle cx="19.5" cy="12.5" r="2" fill="#F4F9F9"/>
+          <path d="M12 13c-3 0-5.5 2-5.5 4.6C6.5 20 8.7 21 12 21s5.5-1 5.5-3.4C17.5 15 15 13 12 13Z" fill="#F4F9F9"/>
+        </svg>
+      </span>
+      Medical Vet
+    </a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#historias">Pacientes</a></li>
+      <li><a href="#resenas">Opiniones</a></li>
+      <li><a href="#faq">Preguntas</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="tel:+523319197443" class="nav-phone">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.9c0-.5.5-1 1-1h3.4c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .7-.2 1L6.6 10.8Z" stroke="#0F6674" stroke-width="1.4"/></svg>
+        33 1919 7443
+      </a>
+      <a href="#agenda" class="btn btn-primary">Agenda tu cita</a>
+      <button class="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Hospital veterinario en Zapopan</span>
+      <h1>Cuidamos a quien no puede pedirlo <em>con palabras</em></h1>
+      <p class="lead">Medicina general, cirugía, urgencias 24 horas y hospitalización para perros, gatos y otras mascotas, con un equipo que explica cada diagnóstico como si fuera tu propia familia.</p>
+      <div class="hero-ctas">
+        <a href="#agenda" class="btn btn-primary">Agenda tu cita en línea</a>
+        <a href="#servicios" class="btn btn-outline">Ver servicios</a>
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.2 6.4.5-4.9 4.3 1.5 6.4L12 16.3 6.4 19.4l1.5-6.4L3 8.7l6.4-.5L12 2Z" fill="#F2994A"/></svg>
+          4.7/5 en Google (252 reseñas)
+        </span>
+        <span class="hero-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0F6674" stroke-width="1.4"/><path d="M12 7v5l3 3" stroke="#0F6674" stroke-width="1.4"/></svg>
+          Urgencias 24/7, todos los días
+        </span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-photo">
+        <img src="https://placehold.co/760x880/1C8695/F4F9F9?text=Foto%3A%20veterinario%20revisando%20a%20un%20perrito&font=raleway" alt="Veterinario revisando a una mascota — imagen genérica de plantilla">
+      </div>
+      <div class="stamp hero-stamp">est. 2014<br>★ pequeñas especies ★</div>
+      <div class="hero-note">
+        <span style="font-size:1.5rem;">🐾</span>
+        <div><strong>+3,000</strong><span>mascotas atendidas al año</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BAND ===== -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div><div class="stat-num">12</div><div class="stat-label">años cuidando mascotas en Zapopan</div></div>
+      <div><div class="stat-num">3,000+</div><div class="stat-label">consultas atendidas al año</div></div>
+      <div><div class="stat-num">4.7</div><div class="stat-label">calificación promedio en Google</div></div>
+      <div><div class="stat-num">24/7</div><div class="stat-label">disponibilidad para urgencias</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICIOS ===== -->
+<section id="servicios">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker" style="justify-content:center;">Servicios</span>
+      <h2>Todo lo que tu mascota necesita, <em>en un solo lugar</em></h2>
+      <p style="margin:0 auto;">De la consulta de rutina a la cirugía, con el mismo equipo dando seguimiento a cada caso.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 4.5-4 8-8 11Z" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Medicina general</h3>
+        <p>Consultas, chequeos anuales y diagnóstico temprano para perros, gatos y mascotas exóticas.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M8 7h8M8 17h8" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Cirugía</h3>
+        <p>Esterilización, cirugías de tejidos blandos y ortopedia con quirófano equipado y monitoreo continuo.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" rx="2" stroke="#F4F9F9" stroke-width="1.5"/><path d="M9 10v4M15 10v4M9 12h6" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Hospitalización</h3>
+        <p>Área de internamiento con vigilancia las 24 horas para casos que requieren observación continua.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#F4F9F9" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Urgencias 24h</h3>
+        <p>Atención inmediata cualquier día del año, incluyendo madrugadas y días festivos.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 12l4-4 4 4 4-6 4 6" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Laboratorio y diagnóstico</h3>
+        <p>Análisis clínicos, radiografía digital y ultrasonido, con resultados el mismo día.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4h12v16l-6-3-6 3V4Z" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Vacunación y desparasitación</h3>
+        <p>Esquemas completos para cachorros y adultos, con cartilla y recordatorios automáticos.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 8c1.5-2 4-3 6-3s4.5 1 6 3M6 8v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Estética canina</h3>
+        <p>Baño, corte y arreglo de tu mascota con productos hipoalergénicos, mismo día si lo necesitas.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8h16l-1.5 11a2 2 0 0 1-2 1.8H7.5a2 2 0 0 1-2-1.8L4 8Z" stroke="#F4F9F9" stroke-width="1.5"/><path d="M8 8V6a4 4 0 0 1 8 0v2" stroke="#F4F9F9" stroke-width="1.5"/></svg></div>
+        <h3>Alimento y accesorios</h3>
+        <p>Venta de alimento seco, húmedo, snacks y accesorios, con asesoría según la etapa de tu mascota.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ENCUENTRA TU SOLUCION ===== -->
+<section class="finder" id="que-necesita">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Guía rápida</span>
+      <h2>¿Qué le pasa a tu mascota?</h2>
+      <p>Cuéntanos qué notaste y te decimos el siguiente paso, sin necesidad de adivinar por tu cuenta.</p>
+    </div>
+    <div class="finder-grid">
+      <div class="finder-card">
+        <span class="finder-emoji">🤒</span>
+        <h3>Está decaído o no come</h3>
+        <p>Puede ser desde algo leve hasta una urgencia. Te recomendamos valoración el mismo día.</p>
+        <span class="finder-tag">Agendar valoración →</span>
+      </div>
+      <div class="finder-card">
+        <span class="finder-emoji">🩹</span>
+        <h3>Tuvo un accidente o herida</h3>
+        <p>Contamos con urgencias 24 horas para atender heridas, golpes o sangrados.</p>
+        <span class="finder-tag">Llamar a urgencias →</span>
+      </div>
+      <div class="finder-card">
+        <span class="finder-emoji">💉</span>
+        <h3>Le tocan vacunas</h3>
+        <p>Revisa el calendario de vacunación más abajo y agenda su próxima dosis.</p>
+        <span class="finder-tag">Ver calendario →</span>
+      </div>
+      <div class="finder-card">
+        <span class="finder-emoji">✂️</span>
+        <h3>Quiero esterilizarlo</h3>
+        <p>Agenda una valoración prequirúrgica y te explicamos el proceso paso a paso.</p>
+        <span class="finder-tag">Agendar cirugía →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== POR QUE ELEGIRNOS ===== -->
+<section id="porque">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Por qué elegirnos</span>
+      <h2>Trato de familia, <em>estándar de hospital</em></h2>
+    </div>
+
+    <div class="why-row">
+      <div class="why-media"><img src="https://placehold.co/620x460/DCEEEC/0A3742?text=Foto%3A%20equipo%20de%20diagn%C3%B3stico&font=raleway" alt="Equipo de diagnóstico"></div>
+      <div class="why-text">
+        <span class="why-num">Tecnología</span>
+        <h3>Diagnóstico preciso, sin adivinar</h3>
+        <p>Radiografía digital, ultrasonido y laboratorio propio para resolver la mayoría de los casos en la misma visita, sin mandarte a otro lugar.</p>
+        <ul class="why-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Laboratorio interno con resultados el mismo día</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Radiografía digital y ultrasonido</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="why-row reverse">
+      <div class="why-media"><img src="https://placehold.co/620x460/DCEEEC/0A3742?text=Foto%3A%20perro%20en%20sala%20de%20espera&font=raleway" alt="Sala de espera pet friendly"></div>
+      <div class="why-text">
+        <span class="why-num">Comodidad</span>
+        <h3>Un espacio pensado para reducir el estrés</h3>
+        <p>Salas separadas para perros y gatos, feromonas relajantes ambientales y manejo con refuerzo positivo durante cada consulta.</p>
+        <ul class="why-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Áreas separadas para perros y gatos</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Manejo de bajo estrés, sin forzar</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="why-row">
+      <div class="why-media"><img src="https://placehold.co/620x460/DCEEEC/0A3742?text=Foto%3A%20presupuesto%20explicado%20a%20due%C3%B1o&font=raleway" alt="Explicación de presupuesto al dueño"></div>
+      <div class="why-text">
+        <span class="why-num">Transparencia</span>
+        <h3>Presupuesto claro antes de tratar</h3>
+        <p>Te explicamos opciones y costos antes de cualquier procedimiento, incluyendo alternativas según tu presupuesto.</p>
+        <ul class="why-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Cotización por escrito antes de tratar</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Planes de pago para cirugías</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HERRAMIENTAS ===== -->
+<section class="tools" id="herramientas">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker" style="color:#F2994A;">Herramientas para dueños</span>
+      <h2>Un par de cosas <em>útiles</em>, no solo bonitas</h2>
+      <p>Dos recursos rápidos que puedes usar ahora mismo, sin necesidad de agendar todavía.</p>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card">
+        <h3>Calculadora de edad</h3>
+        <p>¿Cuántos años "humanos" tiene tu mascota? Selecciona la especie y desliza su edad.</p>
+        <div class="age-controls">
+          <div class="seg">
+            <button type="button" class="active" data-species="dog">🐶 Perro</button>
+            <button type="button" data-species="cat">🐱 Gato</button>
+          </div>
+        </div>
+        <div class="age-input">
+          <input type="range" id="ageRange" min="0" max="20" step="1" value="3">
+          <span class="val" id="ageVal">3 años</span>
+        </div>
+        <div class="age-result">
+          <div class="big" id="ageResult">28</div>
+          <span>años humanos aproximados. Esto es solo orientativo — no reemplaza una valoración veterinaria.</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <h3>Cartilla de vacunación</h3>
+        <p>Marca las vacunas que ya tiene tu mascota y ve qué le falta para estar al día.</p>
+        <div class="vac-tabs">
+          <button type="button" class="active" data-vac="dog">🐶 Cachorro / Perro</button>
+          <button type="button" data-vac="cat">🐱 Gatito / Gato</button>
+        </div>
+        <div class="vac-bar-track"><div class="vac-bar-fill" id="vacBar"></div></div>
+        <div class="vac-list" id="vacList"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== EQUIPO ===== -->
+<section id="equipo">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker" style="justify-content:center;">Equipo</span>
+      <h2>Las manos que <em>cuidan a tu mascota</em></h2>
+      <p style="margin:0 auto;">Un equipo pequeño, no una fila de médicos distintos cada vez que vienes.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo-wrap"><img src="https://placehold.co/360x360/1C8695/F4F9F9?text=Foto%3A%20MVZ%20Carlos&font=raleway" alt="MVZ Carlos Pedroza"></div>
+        <h3>MVZ Carlos Pedroza</h3>
+        <span class="team-role">Director médico</span>
+        <p>Fundador de la clínica, con más de 12 años en medicina de pequeñas especies.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-photo-wrap"><img src="https://placehold.co/360x360/1C8695/F4F9F9?text=Foto%3A%20MVZ%20Jessy&font=raleway" alt="MVZ Jessy Sánchez"></div>
+        <h3>MVZ Jessy Sánchez</h3>
+        <span class="team-role">Medicina interna</span>
+        <p>Especialista en diagnóstico y manejo de enfermedades crónicas en perros y gatos.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-photo-wrap"><img src="https://placehold.co/360x360/1C8695/F4F9F9?text=Foto%3A%20equipo%20de%20apoyo&font=raleway" alt="Equipo de apoyo clínico"></div>
+        <h3>Equipo de apoyo clínico</h3>
+        <span class="team-role">Cirugía y hospitalización</span>
+        <p>Personal capacitado que asiste en quirófano y en el área de internamiento.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-photo-wrap"><img src="https://placehold.co/360x360/1C8695/F4F9F9?text=Foto%3A%20recepci%C3%B3n&font=raleway" alt="Equipo de recepción"></div>
+        <h3>Recepción</h3>
+        <span class="team-role">Primer contacto</span>
+        <p>La primera cara amigable que ve tu mascota al llegar a consulta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HISTORIAS / PACIENTES ===== -->
+<section id="historias" style="background:var(--paper-2);">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker" style="justify-content:center;">Nuestros pacientes</span>
+      <h2>Algunas caras <em>que ya conocemos</em></h2>
+      <p style="margin:0 auto;">Un vistazo a quienes pasan por aquí cada semana.</p>
+    </div>
+    <div class="stories-grid">
+      <div class="story-card"><img src="https://placehold.co/500x820/F2994A/0A3742?text=Firulais&font=raleway" alt="Firulais"><span class="story-cap">Firulais — control anual</span></div>
+      <div class="story-card"><img src="https://placehold.co/500x380/1C8695/F4F9F9?text=Michi&font=raleway" alt="Michi"><span class="story-cap">Michi — vacunación</span></div>
+      <div class="story-card"><img src="https://placehold.co/500x380/E1613F/F4F9F9?text=Toby&font=raleway" alt="Toby"><span class="story-cap">Toby — recuperación</span></div>
+      <div class="story-card"><img src="https://placehold.co/500x380/1C8695/F4F9F9?text=Nube&font=raleway" alt="Nube"><span class="story-cap">Nube — esterilización</span></div>
+      <div class="story-card"><img src="https://placehold.co/500x380/F2994A/0A3742?text=Rocko&font=raleway" alt="Rocko"><span class="story-cap">Rocko — chequeo</span></div>
+      <div class="story-card"><img src="https://placehold.co/500x820/1C8695/F4F9F9?text=Luna&font=raleway" alt="Luna"><span class="story-cap">Luna — hospitalización</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESEÑAS ===== -->
+<section class="reviews" id="resenas">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker" style="justify-content:center;">Opiniones</span>
+      <h2>Lo que dicen otros dueños</h2>
+      <p style="margin:0 auto;">Reseñas reales de Google, sin editar.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>Llevé a mi perro de urgencia a las 11 de la noche y nos atendieron de inmediato. El doctor explicó todo antes de operar.</p>
+        <div class="review-author"><div class="review-avatar">P</div><div><strong>Paola G.</strong><span>Cirugía de urgencia</span></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>Mi gata es súper miedosa y aquí la manejan con una paciencia que no había visto en otras veterinarias.</p>
+        <div class="review-author"><div class="review-avatar">D</div><div><strong>Diego R.</strong><span>Consulta general</span></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>Nos dieron el presupuesto completo antes de operar a nuestro perro, sin sorpresas al final. Se los recomiendo a todos.</p>
+        <div class="review-author"><div class="review-avatar">M</div><div><strong>Mariana T.</strong><span>Esterilización</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLINICA + MAPA ===== -->
+<section id="clinica">
+  <div class="wrap clinic-grid">
+    <div class="clinic-gallery">
+      <img class="g1" src="https://placehold.co/500x900/E7F3F2/0A3742?text=Foto%3A%20fachada%20del%20hospital&font=raleway" alt="Fachada del hospital veterinario">
+      <img src="https://placehold.co/500x430/E7F3F2/0A3742?text=Foto%3A%20recepci%C3%B3n&font=raleway" alt="Recepción">
+      <img src="https://placehold.co/500x430/E7F3F2/0A3742?text=Foto%3A%20quir%C3%B3fano&font=raleway" alt="Quirófano">
+    </div>
+    <div>
+      <span class="kicker">Ubicación</span>
+      <h2>Visítanos en Villas de Guadalupe</h2>
+      <p>Con estacionamiento propio y área separada para casos de urgencia.</p>
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.3 7-11.5A7 7 0 0 0 5 9.5C5 14.7 12 21 12 21Z" stroke="#0A3742" stroke-width="1.4"/><circle cx="12" cy="9.5" r="2.3" stroke="#0A3742" stroke-width="1.4"/></svg></div>
+          <div><strong>Dirección</strong><span>San Pedro 4583-C, Villas de Guadalupe, Zapopan, Jal.</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0A3742" stroke-width="1.4"/><path d="M12 7v5l3 3" stroke="#0A3742" stroke-width="1.4"/></svg></div>
+          <div><strong>Horario</strong><span>Consulta: Lun–Sáb 9:00–20:00 · Urgencias: 24/7</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.9c0-.5.5-1 1-1h3.4c.5 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .7-.2 1L6.6 10.8Z" stroke="#0A3742" stroke-width="1.4"/></svg></div>
+          <div><strong>Teléfono</strong><span>33 1919 7443</span></div>
+        </div>
+      </div>
+      <a href="#agenda" class="btn btn-outline">Cómo llegar y agendar</a>
+      <div class="map-embed">
+        <!-- Reemplazar por el iframe real de Google Maps de la clínica -->
+        <img src="https://placehold.co/900x500/DCEEEC/0A3742?text=Mapa%3A%20insertar%20iframe%20de%20Google%20Maps&font=raleway" alt="Mapa de ubicación — reemplazar con Google Maps">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section style="background:var(--paper-2);" id="faq">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker" style="justify-content:center;">Preguntas frecuentes</span>
+      <h2>Dudas antes de tu primera visita</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q"><span>¿Cuánto cuesta la primera consulta?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>La consulta general tiene un costo de $400 MXN, que incluye revisión completa y orientación sobre siguientes pasos si se necesitan.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>¿Atienden urgencias de madrugada?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Sí, tenemos guardia 24 horas los 365 días del año. Llama antes de venir para que el equipo esté listo cuando llegues.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>¿Qué debo llevar a la primera cita?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Si tu mascota ya tiene cartilla de vacunación, tráela. Si es nueva contigo, no hay problema, la abrimos en tu primera visita.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>¿Ofrecen planes de pago para cirugías?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Sí, para procedimientos mayores ofrecemos opción de pago en parcialidades, sujeto a evaluación previa.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>¿Atienden otras especies además de perros y gatos?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Atendemos también conejos, hurones y algunas aves. Llámanos antes para confirmar disponibilidad según el caso.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AGENDA ===== -->
+<section id="agenda">
+  <div class="wrap">
+    <div class="booking">
+      <div class="booking-copy">
+        <span class="kicker">Agenda tu cita</span>
+        <h2>Reserva un espacio para tu mascota</h2>
+        <p>Llena el formulario y te confirmamos horario el mismo día hábil. Si es urgencia, mejor llámanos directo.</p>
+        <ul class="booking-perks">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Confirmación en menos de 24 horas</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Recordatorio antes de tu cita</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/></svg> Urgencias sin necesidad de agendar</li>
+        </ul>
+        <a href="https://wa.me/523319197443?text=Hola%2C%20quiero%20agendar%20una%20cita%20para%20mi%20mascota" class="whatsapp-cta" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.13L2 22l5.13-1.53a9.87 9.87 0 0 0 4.9 1.31h.01c5.46 0 9.9-4.45 9.9-9.91C22 6.45 17.5 2 12.04 2Zm5.63 14.05c-.24.66-1.4 1.26-1.93 1.34-.5.08-1.12.11-1.8-.12-.42-.13-.95-.3-1.64-.6-2.88-1.24-4.76-4.12-4.9-4.31-.14-.19-1.17-1.56-1.17-2.98 0-1.42.75-2.11 1.02-2.4.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.65.5.24.58.82 2 .89 2.14.07.14.11.3.02.48-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.61-.07.16-.19.7-.81.88-1.09.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.43.19.5.3.07.11.07.63-.17 1.29Z"/></svg>
+          Escríbenos por WhatsApp
+        </a>
+      </div>
+
+      <form class="book-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="nombre">Tu nombre</label>
+            <input id="nombre" type="text" placeholder="Nombre completo" required>
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="tel" placeholder="33 0000 0000" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="mascota">Nombre de tu mascota</label>
+            <input id="mascota" type="text" placeholder="Ej. Rocko">
+          </div>
+          <div class="field">
+            <label for="especie">Especie</label>
+            <select id="especie">
+              <option>Perro</option>
+              <option>Gato</option>
+              <option>Otra especie</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="servicio">Motivo de la visita</label>
+            <select id="servicio">
+              <option>Consulta general</option>
+              <option>Vacunación</option>
+              <option>Cirugía / esterilización</option>
+              <option>Urgencia</option>
+              <option>Hospitalización</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fecha">Fecha preferida</label>
+            <input id="fecha" type="date">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field full">
+            <label for="mensaje">Cuéntanos qué notaste (opcional)</label>
+            <textarea id="mensaje" placeholder="Ej. lleva 2 días sin comer bien"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Solicitar cita</button>
+        <p class="form-note">Al enviar, aceptas que te contactemos para confirmar tu horario. Tus datos no se comparten con terceros.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <span class="mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <circle cx="7" cy="7" r="2" fill="#0A3742"/><circle cx="17" cy="7" r="2" fill="#0A3742"/>
+              <circle cx="4.5" cy="12" r="1.7" fill="#0A3742"/><circle cx="19.5" cy="12" r="1.7" fill="#0A3742"/>
+              <path d="M12 13c-2.6 0-4.8 1.7-4.8 4 0 2.1 1.9 3 4.8 3s4.8-.9 4.8-3c0-2.3-2.2-4-4.8-4Z" fill="#0A3742"/>
+            </svg>
+          </span>
+          Medical Vet
+        </div>
+        <p style="max-width:32ch; font-size:.86rem;">Hospital veterinario para perros, gatos y otras mascotas, en Zapopan desde 2014.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">ig</a>
+          <a href="#" aria-label="TikTok">tt</a>
+        </div>
+      </div>
+      <div>
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#resenas">Opiniones</a></li>
+          <li><a href="#faq">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="#">Medicina general</a></li>
+          <li><a href="#">Cirugía</a></li>
+          <li><a href="#">Urgencias 24h</a></li>
+          <li><a href="#">Hospitalización</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>San Pedro 4583-C, Zapopan, Jal.</li>
+          <li>33 1919 7443</li>
+          <li>hola@medicalvet.mx</li>
+          <li>Urgencias: 24/7</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Medical Vet. Todos los derechos reservados.</span>
+      <span>Aviso de privacidad · Términos y condiciones</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP FLOTANTE ===== -->
+<a class="wa-float" href="https://wa.me/523319197443?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20mi%20mascota" target="_blank" rel="noopener">
+  <span class="wa-tooltip">¿Dudas? Escríbenos</span>
+  <span class="wa-btn">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.44 5.13L2 22l5.13-1.53a9.87 9.87 0 0 0 4.9 1.31h.01c5.46 0 9.9-4.45 9.9-9.91C22 6.45 17.5 2 12.04 2Zm5.63 14.05c-.24.66-1.4 1.26-1.93 1.34-.5.08-1.12.11-1.8-.12-.42-.13-.95-.3-1.64-.6-2.88-1.24-4.76-4.12-4.9-4.31-.14-.19-1.17-1.56-1.17-2.98 0-1.42.75-2.11 1.02-2.4.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.65.5.24.58.82 2 .89 2.14.07.14.11.3.02.48-.09.19-.14.3-.28.46-.14.16-.29.36-.42.48-.14.14-.28.29-.12.57.16.29.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.61-.07.16-.19.7-.81.88-1.09.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.43.19.5.3.07.11.07.63-.17 1.29Z"/></svg>
+  </span>
+</a>
+
+<script>
+  // Menú móvil
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  burger.addEventListener('click', () => {
+    const open = navLinks.style.display === 'flex';
+    navLinks.style.display = open ? 'none' : 'flex';
+    navLinks.style.cssText += open ? '' : 'position:absolute; top:100%; left:0; right:0; flex-direction:column; background:#F4F9F9; padding:20px 32px; gap:16px; border-bottom:1px solid rgba(34,32,27,.14);';
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    if (item.classList.contains('open')) a.style.maxHeight = a.scrollHeight + 'px';
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight = 0; });
+      if (!isOpen){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+    });
+  });
+
+  // Header shadow on scroll
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header.style.boxShadow = window.scrollY > 10 ? '0 4px 20px rgba(24,43,29,.08)' : 'none';
+  });
+
+  // ===== Calculadora de edad =====
+  let species = 'dog';
+  const ageRange = document.getElementById('ageRange');
+  const ageVal = document.getElementById('ageVal');
+  const ageResult = document.getElementById('ageResult');
+  document.querySelectorAll('.seg button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.seg button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      species = btn.dataset.species;
+      updateAge();
+    });
+  });
+  function petHumanAge(years){
+    if (years <= 0) return 0;
+    if (years <= 1) return Math.round(years * 15);
+    if (years <= 2) return Math.round(15 + (years - 1) * 9);
+    return Math.round(24 + (years - 2) * 4);
+  }
+  function updateAge(){
+    const y = parseInt(ageRange.value, 10);
+    ageVal.textContent = y + (y === 1 ? ' año' : ' años');
+    ageResult.textContent = petHumanAge(y);
+  }
+  ageRange.addEventListener('input', updateAge);
+  updateAge();
+
+  // ===== Cartilla de vacunación =====
+  const vacData = {
+    dog: ['Parvovirus', 'Moquillo canino', 'Hepatitis infecciosa', 'Leptospirosis', 'Rabia', 'Tos de las perreras (Bordetella)'],
+    cat: ['Panleucopenia felina', 'Rinotraqueítis felina', 'Calicivirus', 'Rabia', 'Leucemia felina (opcional)']
+  };
+  let vacSpecies = 'dog';
+  const vacList = document.getElementById('vacList');
+  const vacBar = document.getElementById('vacBar');
+
+  function renderVacList(){
+    vacList.innerHTML = '';
+    vacData[vacSpecies].forEach((name, i) => {
+      const id = 'vac_' + vacSpecies + '_' + i;
+      const row = document.createElement('label');
+      row.className = 'vac-item';
+      row.setAttribute('for', id);
+      row.innerHTML = `<input type="checkbox" id="${id}"><span>${name}</span>`;
+      row.querySelector('input').addEventListener('change', (e) => {
+        row.classList.toggle('checked', e.target.checked);
+        updateVacBar();
+      });
+      vacList.appendChild(row);
+    });
+    updateVacBar();
+  }
+  function updateVacBar(){
+    const inputs = vacList.querySelectorAll('input');
+    const checked = vacList.querySelectorAll('input:checked').length;
+    vacBar.style.width = (inputs.length ? (checked / inputs.length) * 100 : 0) + '%';
+  }
+  document.querySelectorAll('.vac-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vac-tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      vacSpecies = btn.dataset.vac;
+      renderVacList();
+    });
+  });
+  renderVacList();
+</script>
+
+</body>
+</html>
